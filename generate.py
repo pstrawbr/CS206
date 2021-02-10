@@ -1,5 +1,9 @@
 import pyrosim.pyrosim as pyrosim
 
+length = 1
+width = 1
+height = 1
+
 
 def Create_World():
     pyrosim.Start_SDF("world.sdf")
@@ -19,17 +23,13 @@ def Create_Robot():
 
     pyrosim.Send_Joint(name="Torso_Leg", parent="Torso", child="Leg", type="revolute", position="0.5,0,1")
 
-    x = 1
-    z = 1.5
+    x = 0.5
+    z = 0.5
     pyrosim.Send_Cube(name="Leg", pos=[x, y, z], size=[length, width, height])
 
     pyrosim.End()
 
 
-length = 1
-width = 1
-height = 1
-
-
 Create_World()
 Create_Robot()
+
