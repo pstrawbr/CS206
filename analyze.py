@@ -10,8 +10,12 @@ import matplotlib.pyplot as plt
 # plt.legend(('Back Leg', 'Front Leg'))
 
 
-# targetAngles = numpy.load("data/targetAngles.npy")
-# plt.plot(targetAngles)
-# plt.legend('Motor Values')
+backLegtargetAngles = numpy.load("data/backLegtargetAngles.npy")
+frontLegtargetAngles = numpy.load("data/frontLegtargetAngles.npy")
+
+plt.plot(backLegtargetAngles)
+plt.plot(frontLegtargetAngles)
+plt.legend(('Back Leg', 'Front Leg'))
+
 
 plt.show()
