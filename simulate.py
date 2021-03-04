@@ -3,11 +3,11 @@ import time
 import pybullet_data
 import pyrosim.pyrosim as pyrosim
 import numpy
-import random
+import constants as c
 
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
-p.setGravity(0, 0, -9.8)
+p.setGravity(c.gravityX, c.gravityY, c.gravityZ)
 
 planeId = p.loadURDF("plane.urdf")
 robot = p.loadURDF("body.urdf")
@@ -15,20 +15,15 @@ p.loadSDF("world.sdf")
 
 pyrosim.Prepare_To_Simulate("body.urdf")
 
-backLegSensorValues = numpy.zeros(1000)
-frontLegSensorValues = numpy.zeros(1000)
+backLegSensorValues = numpy.zeros(c.iterations)
+frontLegSensorValues = numpy.zeros(c.iterations)
 
-amplitude = numpy.pi/3
-frequency = 10
-phaseOffset = 0
-backLegtargetAngles = (amplitude * numpy.sin(frequency * numpy.linspace(-numpy.pi, numpy.pi, 1000) + phaseOffset))
+backLegtargetAngles = c.amplitudeBack * numpy.sin(c.frequencyBack * numpy.linspace(-numpy.pi, numpy.pi, c.iterations) + c.phaseOffsetBack)
 
-amplitude = numpy.pi/3
-frequency = 20
-phaseOffset = 0
-frontLegtargetAngles = (amplitude * numpy.sin(frequency * numpy.linspace(-numpy.pi, numpy.pi, 1000) + phaseOffset))
 
-for i in range(1000):
+frontLegtargetAngles = c.amplitudeFront * numpy.sin(c.frequencyFront * numpy.linspace(-numpy.pi, numpy.pi, c.iterations) + c.phaseOffsetFront)
+
+for i in range(c.iterations):
     p.stepSimulation()
 
     backLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("BackLeg")
@@ -39,15 +34,15 @@ for i in range(1000):
         jointName="Torso_BackLeg",
         controlMode=p.POSITION_CONTROL,
         targetPosition=backLegtargetAngles[i],
-        maxForce=30)
+        maxForce=c.maxForce)
     pyrosim.Set_Motor_For_Joint(
         bodyIndex=robot,
         jointName="Torso_FrontLeg",
         controlMode=p.POSITION_CONTROL,
         targetPosition=frontLegtargetAngles[i],
-        maxForce=30)
+        maxForce=c.maxForce)
 
-    time.sleep(1/240)
+    time.sleep(c.sleepTime)
 
 numpy.save("data/backLegSense.npy", backLegSensorValues)
 numpy.save("data/frontLegSense.npy", frontLegSensorValues)
