@@ -11,13 +11,14 @@ class MOTOR:
         self.Prepare_To_Act()
 
     def Prepare_To_Act(self):
-        self.amplitude = c.amplitudeBack
-        self.frequency = c.frequencyBack
-        self.offset = c.phaseOffsetBack
+        self.amplitude = c.amplitude
+        self.frequency = c.frequency
+        self.offset = c.phaseOffset
         if self.jointName == 'Torso_BackLeg':
             self.frequency = 2
 
-        self.motorValues = (self.amplitude * numpy.sin(self.frequency * numpy.linspace(-numpy.pi, numpy.pi, c.iterations) + self.offset))
+        self.motorValues = (self.amplitude * numpy.sin(
+            self.frequency * numpy.linspace(-numpy.pi, numpy.pi, c.iterations) + self.offset))
 
     def Set_Value(self, t, robot):
         pyrosim.Set_Motor_For_Joint(

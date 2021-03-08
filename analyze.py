@@ -17,5 +17,4 @@ plt.plot(backLegtargetAngles)
 plt.plot(frontLegtargetAngles)
 plt.legend(('Back Leg', 'Front Leg'))
 
-
 plt.show()

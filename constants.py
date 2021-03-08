@@ -6,12 +6,8 @@ gravityZ = -9.8
 
 iterations = 1000
 maxForce = 30
-sleepTime = 1/240
+sleepTime = 1 / 240
 
-amplitudeBack = numpy.pi/3
-frequencyBack = 10
-phaseOffsetBack = 0
-
-amplitudeFront = numpy.pi/3
-frequencyFront = 20
-phaseOffsetFront = 0
+amplitude = numpy.pi / 3
+frequency = 10
+phaseOffset = 0
