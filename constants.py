@@ -11,3 +11,7 @@ sleepTime = 1 / 240
 amplitude = numpy.pi / 3
 frequency = 10
 phaseOffset = 0
+
+length = 1
+width = 1
+height = 1
