@@ -17,7 +17,6 @@ class HILL_CLIMBER:
 
     def Evolve_For_One_Generation(self, mode):
         self.Spawn()
-        self.Spawn()
         self.Mutate()
         self.child.Evaluate(mode)
         self.Print()
