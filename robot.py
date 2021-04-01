@@ -3,18 +3,21 @@ import pybullet as p
 from sensor import SENSOR
 from motor import MOTOR
 from pyrosim.neuralNetwork import NEURAL_NETWORK
+import os
 
 
 class ROBOT:
-    def __init__(self):
+    def __init__(self, solutionID):
         pyrosim.Prepare_To_Simulate("body.urdf")
         self.robot = p.loadURDF("body.urdf")
         self.sensors = {}
         self.motors = {}
-        self.nn = NEURAL_NETWORK("brain.nndf")
+        self.nn = NEURAL_NETWORK("brain"+str(solutionID)+".nndf")
 
         self.Prepare_To_Sense()
         self.Prepare_To_Act()
+
+        os.system("del brain"+str(solutionID)+".nndf")
 
     def Prepare_To_Sense(self):
         for linkName in pyrosim.linkNamesToIndices:
@@ -38,11 +41,13 @@ class ROBOT:
     def Think(self):
         self.nn.Update()
 
-    def Get_Fitness(self):
+    def Get_Fitness(self,solutionID):
         stateOfLinkZero = p.getLinkState(self.robot,0)
         positionOfLinkZero = stateOfLinkZero[0]
         xCoordinateOfLinkZero = positionOfLinkZero[0]
-        print(xCoordinateOfLinkZero)
-        f = open("fitness.txt", "w")
+        f = open("tmp"+str(solutionID)+".txt", "w")
         f.write(str(xCoordinateOfLinkZero))
         f.close()
+        os.system("rename tmp"+str(solutionID)+".txt fitness"+str(solutionID)+".txt")
+
+# TODO STUCK ON 55
