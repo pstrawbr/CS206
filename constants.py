@@ -16,4 +16,5 @@ length = 1
 width = 1
 height = 1
 
-numberOfGenerations = 50
+numberOfGenerations = 10
+populationSize = 10

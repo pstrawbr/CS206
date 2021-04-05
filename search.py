@@ -1,5 +1,6 @@
 from hillclimber import HILL_CLIMBER
+from parallelHillClimber import PARALELL_HILL_CLIMBER
 
-hc = HILL_CLIMBER()
-hc.Evolve()
-hc.Show_Best()
+phc = PARALELL_HILL_CLIMBER()
+phc.Evolve()
+phc.Show_Best()
