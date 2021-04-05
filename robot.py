@@ -12,12 +12,11 @@ class ROBOT:
         self.robot = p.loadURDF("body.urdf")
         self.sensors = {}
         self.motors = {}
-        self.nn = NEURAL_NETWORK("brain"+str(solutionID)+".nndf")
+        self.nn = NEURAL_NETWORK("brain" + str(solutionID) + ".nndf")
 
         self.Prepare_To_Sense()
         self.Prepare_To_Act()
-
-        os.system("del brain"+str(solutionID)+".nndf")
+        os.system("del brain" + str(solutionID) + ".nndf")
 
     def Prepare_To_Sense(self):
         for linkName in pyrosim.linkNamesToIndices:
@@ -41,13 +40,11 @@ class ROBOT:
     def Think(self):
         self.nn.Update()
 
-    def Get_Fitness(self,solutionID):
+    def Get_Fitness(self, solutionID):
         stateOfLinkZero = p.getLinkState(self.robot,0)
         positionOfLinkZero = stateOfLinkZero[0]
         xCoordinateOfLinkZero = positionOfLinkZero[0]
-        f = open("tmp"+str(solutionID)+".txt", "w")
+        f = open("tmp" + str(solutionID) + ".txt", "w")
         f.write(str(xCoordinateOfLinkZero))
         f.close()
-        os.system("rename tmp"+str(solutionID)+".txt fitness"+str(solutionID)+".txt")
-
-# TODO STUCK ON 55
+        os.rename("tmp" + str(solutionID) + ".txt", "fitness" + str(solutionID) + ".txt")

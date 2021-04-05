@@ -8,7 +8,9 @@ import time
 
 class SIMULATION:
     def __init__(self, directOrGUI, solutionID):
-        if directOrGUI == "DIRECT":
+        self.solutionID = solutionID
+        self.directOrGUI = directOrGUI
+        if self.directOrGUI == "DIRECT":
             self.physicsClient = p.connect(p.DIRECT)
         else:
             self.physicsClient = p.connect(p.GUI)
@@ -16,21 +18,21 @@ class SIMULATION:
         p.setGravity(c.gravityX, c.gravityY, c.gravityZ)
 
         self.world = WORLD()
-        self.robot = ROBOT(solutionID)
+        self.robot = ROBOT(self.solutionID)
 
-    def Run(self, directOrGUI):
+    def Run(self):
         for t in range(c.iterations):
             p.stepSimulation()
 
             self.robot.Sense(t)
             self.robot.Think()
             self.robot.Act()
-            if directOrGUI == 'GUI':
+            if self.directOrGUI == 'GUI':
                 time.sleep(c.sleepTime)
 
 
-    def Get_Fitness(self, solutionID):
-        self.robot.Get_Fitness(solutionID)
+    def Get_Fitness(self):
+        self.robot.Get_Fitness(self.solutionID)
 
     def __del__(self):
         p.disconnect()
