@@ -16,5 +16,10 @@ length = 1
 width = 1
 height = 1
 
-numberOfGenerations = 10
-populationSize = 10
+numberOfGenerations = 5
+populationSize = 5
+
+numSensorNeurons = 4
+numMotorNeurons = 8
+
+motorJointRange = 1
