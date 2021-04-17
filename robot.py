@@ -47,7 +47,7 @@ class ROBOT:
         basePositionAndOrientation = p.getBasePositionAndOrientation(self.robot)
         basePosition = basePositionAndOrientation[0]
         xPosition = basePosition[0]
-        f = open("tmp" + str(solutionID) + ".txt", "w")
+        f = open("fitness" + str(solutionID) + ".txt", "w")
         f.write(str(xPosition))
         f.close()
-        os.rename("tmp" + str(solutionID) + ".txt", "fitness" + str(solutionID) + ".txt")
+        #os.rename("tmp" + str(solutionID) + ".txt", "fitness" + str(solutionID) + ".txt")

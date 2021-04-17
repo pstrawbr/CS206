@@ -3,12 +3,14 @@ import pyrosim.pyrosim as pyrosim
 import constants as c
 import random
 import os, time
+from Legs import Legs
 
 
 class SOLUTION:
     def __init__(self, myID):
         self.weights = (numpy.random.rand(c.numSensorNeurons, c.numMotorNeurons) * 2) - 1
         self.myID = myID
+        self.legs = Legs()
 
     def Start_Simulation(self, mode):
         self.Create_World()
@@ -38,47 +40,36 @@ class SOLUTION:
 
         pyrosim.Send_Cube(name="Torso", pos=[0, 0, 1], size=[c.length, c.width, c.height])
 
-        pyrosim.Send_Joint(name="Torso_FrontLeg", parent="Torso", child="FrontLeg", type="revolute", position="0 0.5 1", jointAxis="1 0 0")
-        pyrosim.Send_Cube(name="FrontLeg", pos=[0, .5, 0], size=[.2, 1, .2])
+        for i in range(c.numberOfLegs):
+            pyrosim.Send_Joint(name="Torso_"+str(i), parent="Torso", child=str(i), type="revolute",
+                               position=str(self.legs.upperLegsJointPositions[i][0]) + " " + str(
+                                   self.legs.upperLegsJointPositions[i][1]) + " " + str(
+                                   self.legs.upperLegsJointPositions[i][2]),
+                               jointAxis=str(self.legs.upperLegsJointAxis[i][0]) + " " + str(
+                                   self.legs.upperLegsJointAxis[i][1]) + " " + str(self.legs.upperLegsJointAxis[i][2]))
+            pyrosim.Send_Cube(name=str(i),
+                              pos=self.legs.upperLegsPositions[i],
+                              size=self.legs.upperLegsSize[i])
 
-        pyrosim.Send_Joint(name="Torso_BackLeg", parent="Torso", child="BackLeg", type="revolute", position="0 -0.5 1", jointAxis="1 0 0")
-        pyrosim.Send_Cube(name="BackLeg", pos=[0, -.5, 0], size=[.2, 1, .2])
-
-        pyrosim.Send_Joint(name="Torso_LeftLeg", parent="Torso", child="LeftLeg", type="revolute", position="-0.5 0 1", jointAxis="0 1 0")
-        pyrosim.Send_Cube(name="LeftLeg", pos=[-.5, 0, 0], size=[1, 0.2, .2])
-
-        pyrosim.Send_Joint(name="Torso_RightLeg", parent="Torso", child="RightLeg", type="revolute", position="0.5 0 1", jointAxis="0 1 0")
-        pyrosim.Send_Cube(name="RightLeg", pos=[.5, 0, 0], size=[1, 0.2, .2])
-
-        pyrosim.Send_Joint(name="FrontLeg_FrontLowerLeg", parent="FrontLeg", child="FrontLowerLeg", type="revolute", position="0 1 0", jointAxis="1 0 0")
-        pyrosim.Send_Cube(name="FrontLowerLeg", pos=[0, 0, -0.5], size=[0.2, 0.2, 1])
-
-        pyrosim.Send_Joint(name="BackLeg_BackLowerLeg", parent="BackLeg", child="BackLowerLeg", type="revolute", position="0 -1 0", jointAxis="1 0 0")
-        pyrosim.Send_Cube(name="BackLowerLeg", pos=[0, 0, -0.5], size=[0.2, 0.2, 1])
-
-        pyrosim.Send_Joint(name="LeftLeg_LeftLowerLeg", parent="LeftLeg", child="LeftLowerLeg", type="revolute", position="-1 0 0", jointAxis="0 1 0")
-        pyrosim.Send_Cube(name="LeftLowerLeg", pos=[0, 0, -0.5], size=[0.2, 0.2, 1])
-
-        pyrosim.Send_Joint(name="RightLeg_RightLowerLeg", parent="RightLeg", child="RightLowerLeg", type="revolute", position="1 0 0", jointAxis="0 1 0")
-        pyrosim.Send_Cube(name="RightLowerLeg", pos=[0, 0, -0.5], size=[0.2, 0.2, 1])
+            pyrosim.Send_Joint(name=str(i)+"_Lower" + str(i), parent=str(i), child="Lower" + str(i), type="revolute",
+                               position=str(self.legs.lowerLegsJointPositions[i][0]) + " " + str(
+                                   self.legs.lowerLegsJointPositions[i][1]) + " " + str(
+                                   self.legs.lowerLegsJointPositions[i][2]),
+                               jointAxis=str(self.legs.upperLegsJointAxis[i][0]) + " " + str(
+                                   self.legs.upperLegsJointAxis[i][1]) + " " + str(self.legs.upperLegsJointAxis[i][2]))
+            pyrosim.Send_Cube(name="Lower" + str(i), pos=[0, 0, -0.5], size=[0.2, 0.2, 1])
 
         pyrosim.End()
 
     def Create_Brain(self):
         pyrosim.Start_NeuralNetwork("brain" + str(self.myID) + ".nndf")
-        pyrosim.Send_Sensor_Neuron(name=0, linkName="FrontLowerLeg")
-        pyrosim.Send_Sensor_Neuron(name=1, linkName="BackLowerLeg")
-        pyrosim.Send_Sensor_Neuron(name=2, linkName="LeftLowerLeg")
-        pyrosim.Send_Sensor_Neuron(name=3, linkName="RightLowerLeg")
 
-        pyrosim.Send_Motor_Neuron(name=4, jointName="Torso_FrontLeg")
-        pyrosim.Send_Motor_Neuron(name=5, jointName="Torso_BackLeg")
-        pyrosim.Send_Motor_Neuron(name=6, jointName="Torso_LeftLeg")
-        pyrosim.Send_Motor_Neuron(name=7, jointName="Torso_RightLeg")
-        pyrosim.Send_Motor_Neuron(name=8, jointName="FrontLeg_FrontLowerLeg")
-        pyrosim.Send_Motor_Neuron(name=9, jointName="BackLeg_BackLowerLeg")
-        pyrosim.Send_Motor_Neuron(name=10, jointName="LeftLeg_LeftLowerLeg")
-        pyrosim.Send_Motor_Neuron(name=11, jointName="RightLeg_RightLowerLeg")
+        for i in range(c.numberOfLegs):
+            pyrosim.Send_Sensor_Neuron(name=i, linkName="Lower"+str(i))
+        for i in range(c.numberOfLegs, c.numberOfLegs * 2):
+            pyrosim.Send_Motor_Neuron(name=i, jointName="Torso_"+str(i))
+        for i in range(c.numberOfLegs * 2, c.numberOfLegs * 3):
+            pyrosim.Send_Motor_Neuron(name=i, jointName=str(i) + "_Lower" + str(i))
 
         for currentRow in range(c.numSensorNeurons):
             for currentColumn in range(c.numMotorNeurons):
@@ -90,9 +81,4 @@ class SOLUTION:
 
     def Create_World(self):
         pyrosim.Start_SDF("world"+str(self.myID)+".sdf")
-        x = 2
-        y = 2
-        z = 0.5
-        pyrosim.Send_Cube(name="Box", pos=[x, y, z], size=[c.length, c.width, c.height])
-
         pyrosim.End()
