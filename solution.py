@@ -34,7 +34,7 @@ class SOLUTION:
         self.myID = nextAvailableID + 1
 
     def Create_Body(self):
-        pyrosim.Start_URDF("body.urdf")
+        pyrosim.Start_URDF("body"+str(self.myID)+".urdf")
 
         pyrosim.Send_Cube(name="Torso", pos=[0, 0, 1], size=[c.length, c.width, c.height])
 
@@ -89,7 +89,7 @@ class SOLUTION:
         pyrosim.End()
 
     def Create_World(self):
-        pyrosim.Start_SDF("world.sdf")
+        pyrosim.Start_SDF("world"+str(self.myID)+".sdf")
         x = 2
         y = 2
         z = 0.5

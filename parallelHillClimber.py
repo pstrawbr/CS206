@@ -7,7 +7,8 @@ class PARALELL_HILL_CLIMBER:
     def __init__(self):
         os.system("del brain*.nndf")
         os.system("del fitness*.txt")
-
+        os.system("del body*.urdf")
+        os.system("del world*.sdf")
         self.parents = {}
         self.nextAvailableID = 0
         for i in range(c.populationSize):

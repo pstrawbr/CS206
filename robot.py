@@ -9,8 +9,8 @@ import constants as c
 
 class ROBOT:
     def __init__(self, solutionID):
-        pyrosim.Prepare_To_Simulate("body.urdf")
-        self.robot = p.loadURDF("body.urdf")
+        pyrosim.Prepare_To_Simulate("body"+str(solutionID)+".urdf")
+        self.robot = p.loadURDF("body"+str(solutionID)+".urdf")
         self.sensors = {}
         self.motors = {}
         self.nn = NEURAL_NETWORK("brain" + str(solutionID) + ".nndf")
@@ -18,6 +18,8 @@ class ROBOT:
         self.Prepare_To_Sense()
         self.Prepare_To_Act()
         os.system("del brain" + str(solutionID) + ".nndf")
+        os.system("del body" + str(solutionID) + ".urdf")
+        os.system("del world" + str(solutionID) + ".sdf")
 
     def Prepare_To_Sense(self):
         for linkName in pyrosim.linkNamesToIndices:
@@ -42,10 +44,10 @@ class ROBOT:
         self.nn.Update()
 
     def Get_Fitness(self, solutionID):
-        stateOfLinkZero = p.getLinkState(self.robot,0)
-        positionOfLinkZero = stateOfLinkZero[0]
-        xCoordinateOfLinkZero = positionOfLinkZero[0]
+        basePositionAndOrientation = p.getBasePositionAndOrientation(self.robot)
+        basePosition = basePositionAndOrientation[0]
+        xPosition = basePosition[0]
         f = open("tmp" + str(solutionID) + ".txt", "w")
-        f.write(str(xCoordinateOfLinkZero))
+        f.write(str(xPosition))
         f.close()
         os.rename("tmp" + str(solutionID) + ".txt", "fitness" + str(solutionID) + ".txt")
