@@ -1,51 +1,82 @@
 import constants as c
-import numpy
 
 
 class Legs:
     def __init__(self):
-        self.num = c.numberOfLegs
-
         self.upperLegsJointPositions = []
         self.upperLegsJointAxis = []
-
         self.upperLegsPositions = []
         self.upperLegsSize = []
-
         self.lowerLegsJointPositions = []
 
-        degreesBetween = 360.0/self.num
+        self.buildLeftAndRight()
+        if c.numberOfLegs >= c.torsoSides:
+            self.buildFrontAndBack()
 
-        torsoJointZ = 1
-        jointAxisZ = 0
+    def buildLeftAndRight(self):
+        Xpos = 0
+        Ypos = c.torsoWidth / 2
+        Zpos = 1
+
+        Xaxis = 1
+        Yaxis = 0
+        Zaxis = 0
+
+        Xsize = 0.2
+        Ysize = 1
         Zsize = 0.2
-        angle = 0
 
-        for i in range(self.num):
-            x = numpy.cos(numpy.radians(angle)) / 2
-            y = numpy.sin(numpy.radians(angle)) / 2
-
-            angle += degreesBetween
-            if 0.001 > x > 0 or -0.001 < x < 0:
-                x = 0
-            if 0.001 > y > 0 or -0.001 < y < 0:
-                y = 0
-            self.upperLegsJointPositions.append([x,y,torsoJointZ])
-            self.lowerLegsJointPositions.append([x*2,y*2,jointAxisZ])
-
-            if x != 0:
-                Xaxis = 0
-                Xsize = 1
+        for i in range(2):
+            if Ypos > 0:
+                YjointPos = Ysize
             else:
-                Xaxis = 1
-                Xsize = 0.2
-            if y != 0:
-                Yaxis = 0
-                Ysize = 1
-            else:
-                Yaxis = 1
-                Ysize = 0.2
-            self.upperLegsJointAxis.append([Xaxis,Yaxis,jointAxisZ])
+                YjointPos = -Ysize
+            self.upperLegsJointPositions.append([Xpos, Ypos, Zpos])
+            self.lowerLegsJointPositions.append([Xpos, YjointPos, Zaxis])
+            self.upperLegsJointAxis.append([Xaxis, Yaxis, Zaxis])
+            self.upperLegsPositions.append([Xpos, YjointPos / 2, Zpos - 1])
+            self.upperLegsSize.append([Xsize, Ysize, Zsize])
 
-            self.upperLegsPositions.append([x,y,0])
-            self.upperLegsSize.append([Xsize,Ysize,Zsize])
+            Ypos -= c.torsoWidth
+
+    def buildFrontAndBack(self):
+        numYLegs = int((c.numberOfLegs - 2) / 2)  # NUMBER ON EACH SIDE (6 Legs = 2)
+        spaceBetween = c.torsoWidth / (numYLegs + 1)
+
+        Xsize = 1
+        Ysize = 0.2
+        Zsize = 0.2
+
+        Xaxis = 0
+        Yaxis = 1
+        Zaxis = 0
+
+        if numYLegs % 2 == 0:
+            Ypos = (spaceBetween / 2) + (numYLegs / 2) * - spaceBetween
+        else:
+            Ypos = ((numYLegs - 1) / 2) * - spaceBetween
+
+        Xpos = 0.5
+        Zpos = 1
+
+        for i in range(numYLegs):
+            self.upperLegsJointPositions.append([Xpos, Ypos, Zpos])
+            self.lowerLegsJointPositions.append([Xpos * 2, 0, Zaxis])
+            self.upperLegsJointAxis.append([Xaxis, Yaxis, Zaxis])
+            self.upperLegsPositions.append([Xpos, 0, Zpos - 1])
+            self.upperLegsSize.append([Xsize, Ysize, Zsize])
+            Ypos += spaceBetween
+
+        if numYLegs % 2 == 0:
+            Ypos = (spaceBetween / 2) + (numYLegs / 2) * - spaceBetween
+        else:
+            Ypos = ((numYLegs - 1) / 2) * - spaceBetween
+        Xpos = -0.5
+
+        for i in range(numYLegs):
+            self.upperLegsJointPositions.append([Xpos, Ypos, Zpos])
+            self.lowerLegsJointPositions.append([Xpos * 2, 0, Zaxis])
+            self.upperLegsJointAxis.append([Xaxis, Yaxis, Zaxis])
+            self.upperLegsPositions.append([Xpos, 0, Zpos - 1])
+            self.upperLegsSize.append([Xsize, Ysize, Zsize])
+            Ypos += spaceBetween

@@ -1,5 +1,7 @@
 import numpy
 
+torsoSides = 4
+
 gravityX = 0
 gravityY = 0
 gravityZ = -9.8
@@ -13,15 +15,15 @@ frequency = 10
 phaseOffset = 0
 
 length = 1
-width = 1
 height = 1
 
 numberOfGenerations = 1
 populationSize = 1
 
-numSensorNeurons = 4
-numMotorNeurons = 8
-
 motorJointRange = 0.6
 
-numberOfLegs = 4
+torsoWidth = 3
+numberOfLegs = 16
+
+numSensorNeurons = numberOfLegs
+numMotorNeurons = numberOfLegs * 2
