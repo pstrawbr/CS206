@@ -56,11 +56,17 @@ class PARALELL_HILL_CLIMBER:
             print("Parent:", self.parents[key].fitness, "\tChild:", self.children[key].fitness)
         print('----------------------------------------------------------\n')
 
-    def Show_Best(self):
+    def Show_Best(self, loop):
         lowest = self.parents[0].fitness
         temp = self.parents[0]
         for key in self.parents:
             if self.parents[key].fitness < lowest:
                 lowest = self.parents[key].fitness
                 temp = self.parents[key]
-        temp.Start_Simulation(mode="GUI")
+        if not loop:
+            temp.Start_Simulation(mode="GUI")
+
+        if loop:
+            f = open("bestFitness.txt", "a")
+            f.write(str(c.numberOfLegs) + ": " + str(temp.fitness) + "\n")
+            f.close()

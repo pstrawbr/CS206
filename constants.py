@@ -17,13 +17,15 @@ phaseOffset = 0
 length = 1
 height = 1
 
-numberOfGenerations = 1
-populationSize = 1
+numberOfGenerations = 5
+populationSize = 5
 
 motorJointRange = 0.6
 
-torsoWidth = 3
-numberOfLegs = 16
+numberOfLegs = 4
+torsoWidth = (numberOfLegs - 2 / 2) / 3
 
 numSensorNeurons = numberOfLegs
 numMotorNeurons = numberOfLegs * 2
+
+orientation = 0
