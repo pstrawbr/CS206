@@ -9,6 +9,7 @@ gravityZ = -9.8
 iterations = 1000
 maxForce = 100
 sleepTime = 1 / 2400
+motorJointRange = 0.6
 
 amplitude = numpy.pi / 3
 frequency = 10
@@ -20,10 +21,12 @@ height = 1
 numberOfGenerations = 5
 populationSize = 5
 
-motorJointRange = 0.6
+numberOfLegs = 10
 
-numberOfLegs = 4
-torsoWidth = (numberOfLegs - 2 / 2) / 3
+if numberOfLegs == 4:
+    torsoWidth = 1
+else:
+    torsoWidth = (numberOfLegs - 2 / 2) / 4
 
 numSensorNeurons = numberOfLegs
 numMotorNeurons = numberOfLegs * 2

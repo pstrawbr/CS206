@@ -8,16 +8,19 @@ loop = False
 if loop:
     legNums = [4, 6, 8, 10, 12, 14]
     os.system("del bestFitness.txt")
-    divs = [3, 6]
+    orients = [0, 1]
 
-    for div in divs:
+    for orient in orients:
         f = open("bestFitness.txt", "a")
-        f.write(str(div) + "\n")
+        f.write("Orientation: " + str(orient) + "\n")
         f.close()
         for num in legNums:
             c.numberOfLegs = num
             c.orientation = 0
-            c.torsoWidth = (num - 2 / 2) / div
+            if c.numberOfLegs == 4:
+                torsoWidth = 1
+            else:
+                torsoWidth = (c.numberOfLegs - 2 / 2) / 4
             c.numSensorNeurons = num
             c.numMotorNeurons = num * 2
 
