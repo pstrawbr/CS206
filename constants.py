@@ -18,8 +18,8 @@ phaseOffset = 0
 length = 1
 height = 1
 
-numberOfGenerations = 100
-populationSize = 20
+numberOfGenerations = 1
+populationSize = 1
 
 numberOfLegs = 6
 

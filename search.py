@@ -9,8 +9,8 @@ if loop:
     a_b = [0] # , 1, 2
     legNums = [8] # 4,6 ,
     os.system("del bestFitness.txt")
-    names = ["oct"] # "quad", "hex",
-
+    #names = ["oct"] # "quad", "hex",
+    names = ['']
     #for orient in orients:
         #f = open("bestFitness.txt", "a")
         #f.write("Orientation: " + str(orient) + "\n")
