@@ -18,12 +18,12 @@ phaseOffset = 0
 length = 1
 height = 1
 
-numberOfGenerations = 5
-populationSize = 5
+numberOfGenerations = 100
+populationSize = 20
 
-numberOfLegs = 10
+numberOfLegs = 6
 
-if numberOfLegs == 4:
+if numberOfLegs == 2 or numberOfLegs == 4:
     torsoWidth = 1
 else:
     torsoWidth = (numberOfLegs - 2 / 2) / 4

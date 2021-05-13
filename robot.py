@@ -48,6 +48,6 @@ class ROBOT:
         basePosition = basePositionAndOrientation[0]
         xPosition = basePosition[c.orientation]
         f = open("fitness" + str(solutionID) + ".txt", "w")
-        f.write(str(xPosition))
+        f.write(str(xPosition).strip())
         f.close()
         #os.rename("tmp" + str(solutionID) + ".txt", "fitness" + str(solutionID) + ".txt")
